@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\Customer;
 
 use App\Http\Controllers\Controller;
+use App\Http\Events\CreateAppointment;
 use App\Http\Requests\Customer\ProfileUpdateRequest;
 use App\Models\Appointment;
-use App\Providers\RouteServiceProvider;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -33,9 +33,6 @@ class AppointmentController extends Controller
     {
         try {
             $request->validate([
-                'name' => ['required', 'string', 'max:255'],
-                'email' => ['required', 'string', 'lowercase', 'email', 'max:255'],
-                'phone' => ['required', 'digits_between:10,11'],
                 'appointment_datetime' => ['required', 'string'],
                 'description' => ['string']
             ]);
@@ -43,14 +40,13 @@ class AppointmentController extends Controller
             $appointmentData = [
                 'customer_id' => $request->user('customer')->id,
                 'doctor_id' => null,
-//                'email' => $request->email,
-//                'phone' => $request->phone,
                 'appointment_datetime' => $request->appointment_datetime,
                 'status' => 'WAITING_FOR_CONFIRMATION',
                 'description' => $request->description
             ];
 
-            Appointment::query()->create($appointmentData);
+            $appointment = Appointment::query()->create($appointmentData);
+            event(new CreateAppointment($appointment));
 
             return redirect('/appointment');
         } catch (\Exception $e) {
