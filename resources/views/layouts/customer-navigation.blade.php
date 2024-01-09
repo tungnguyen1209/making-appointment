@@ -38,9 +38,9 @@
                             {{ __('Profile') }}
                         </x-dropdown-link>
 
-{{--                        <x-responsive-nav-link :href="route('customer.address.index')">--}}
-{{--                            {{ __('Addresses') }}--}}
-{{--                        </x-responsive-nav-link>--}}
+                        <x-responsive-nav-link :href="route('customer.address.index')">
+                            {{ __('Addresses') }}
+                        </x-responsive-nav-link>
 
                         <x-responsive-nav-link :href="route('customer.appointment.index')">
                             {{ __('Appointments') }}
@@ -91,9 +91,9 @@
                     {{ __('Profile') }}
                 </x-responsive-nav-link>
 
-{{--                <x-responsive-nav-link :href="route('customer.address.index')">--}}
-{{--                    {{ __('Addresses') }}--}}
-{{--                </x-responsive-nav-link>--}}
+                <x-responsive-nav-link :href="route('customer.address.index')">
+                    {{ __('Addresses') }}
+                </x-responsive-nav-link>
 
                 <x-responsive-nav-link :href="route('customer.appointment.index')">
                     {{ __('Appointments') }}

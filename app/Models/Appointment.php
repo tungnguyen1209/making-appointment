@@ -2,13 +2,20 @@
 
 namespace App\Models;
 
-use App\Notifications\CreateAppointment;
+use App\Notifications\Appointment as AppointmentNotification;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 
 class Appointment extends Model
 {
+    public const WAITING_FOR_CONFIRM = 'WAITING_FOR_CONFIRM';
+    public const CONFIRMED = 'CONFIRMED';
+    public const CANCELED = 'CANCELED';
+    public const ASSIGNED_TO_DOCTOR = 'ASSIGNED_TO_DOCTOR';
+    public const COMPLETED = 'COMPLETED';
+
+
     use HasFactory, Notifiable;
 
     /**
@@ -17,8 +24,12 @@ class Appointment extends Model
      * @var array<int, string>
      */
     protected $fillable = [
+        'name',
+        'email',
+        'phone',
         'customer_id',
         'doctor_id',
+        'address_id',
         'appointment_datetime',
         'description',
         'status'
@@ -30,8 +41,8 @@ class Appointment extends Model
      * @param string $type
      * @return void
      */
-    public function sendCreatedNotification(string $type): void
+    public function sendNotification(string $type): void
     {
-        $this->notify(new CreateAppointment($type));
+        $this->notify(new AppointmentNotification($type));
     }
 }

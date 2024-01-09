@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Customer\AddressController;
 use App\Http\Controllers\Customer\AppointmentController;
 use App\Http\Controllers\Customer\AuthenticatedSessionController;
 use App\Http\Controllers\Customer\ConfirmablePasswordController;
@@ -93,21 +94,39 @@ function getAuthCustomerRoutes(): void
             Route::get('appointment', [AppointmentController::class, 'index'])
                 ->name('customer.appointment.index');
 
-            Route::get('appointment/create', function () {
-                return view('customer.appointment.create');
-            });
+            Route::get('appointment/create', [AppointmentController::class, 'createForm'])
+                ->name('customer.appointment.create.form');
 
             Route::post('appointment/create', [AppointmentController::class, 'create'])
                 ->name('customer.appointment.create');
 
-            Route::get('appointment/edit/{id}', [AppointmentController::class, 'edit'])
-                ->name('customer.appointment.edit');
+            Route::get('appointment/view/id/{id}', [AppointmentController::class, 'view'])
+                ->name('customer.appointment.view');
 
-            Route::patch('appointment', [AppointmentController::class, 'update'])
+            Route::post('appointment/update/id/{id}', [AppointmentController::class, 'update'])
                 ->name('customer.appointment.update');
 
-            Route::delete('appointment', [AppointmentController::class, 'destroy'])
-                ->name('customer.appointment.destroy');
+            Route::put('appointment/cancel/{id}', [AppointmentController::class, 'cancel'])
+                ->name('customer.appointment.cancel');
+
+            Route::get('address', [AddressController::class, 'index'])
+                ->name('customer.address.index');
+
+            Route::get('address/create', function () {
+                return view('customer.address.create');
+            });
+
+            Route::post('address/create', [AddressController::class, 'create'])
+                ->name('customer.address.create');
+
+            Route::get('address/view/id/{id}', [AddressController::class, 'view'])
+                ->name('customer.address.view');
+
+            Route::post('address/update/id/{id}', [AddressController::class, 'update'])
+                ->name('customer.address.update');
+
+            Route::delete('address/delete/id/{id}', [AddressController::class, 'delete'])
+                ->name('customer.address.delete');
 
             Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])
                 ->name('customer.logout');
