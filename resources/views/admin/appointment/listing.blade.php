@@ -1,4 +1,4 @@
-<x-app-layout>
+<x-admin-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
             {{ __('Appointment Listing') }}
@@ -13,7 +13,7 @@
                             {{ session('success') }}
                         </div>
                     @endif
-                    <a href="{{ route('customer.appointment.create') }}"
+                    <a href="{{ route('admin.appointment.create') }}"
                        class="mb-4 inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-xs font-semibold uppercase tracking-widest text-gray-700 shadow-sm transition duration-150 ease-in-out hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-25">
                         Create
                     </a>
@@ -136,4 +136,4 @@
             </div>
         </div>
     </div>
-</x-app-layout>
+</x-admin-app-layout>

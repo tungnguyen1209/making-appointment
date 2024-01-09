@@ -19,7 +19,7 @@
                     </a>
                     @if ($itemsCount == 0)
                         <div class="min-w-full align-middle">
-                            {{__("You don't have any addresses'")}}
+                            {{__("You don't have any appointment!")}}
                         </div>
                     @else
                         <div class="min-w-full align-middle">
