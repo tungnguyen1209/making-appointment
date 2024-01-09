@@ -90,4 +90,14 @@ class Customer extends Authenticatable implements MustVerifyEmail, CanResetPassw
     {
         $this->notify(new ResetPasswords($token));
     }
+
+    /**
+     * Get Confirmation Status of Customer
+     *
+     * @return bool
+     */
+    public function getConfirmationStatus(): bool
+    {
+        return (bool)$this->email_verified_at;
+    }
 }
