@@ -22,13 +22,14 @@ class AppointmentController extends Controller
                     continue;
                 }
 
-                $items = $items->where($key, 'LIKE', "%$value%");
+                $items = $items->where($key, $value);
             }
         }
 
         $itemsCount = $items->count();
 
-        $items->take($request->get('pageSize'))->skip($request->get('page'));
+        $items = $items->skip($request->get('pageSize') * ($request->get('page') - 1))
+            ->take($request->get('pageSize'));
 
         return view('admin.appointment.listing', [
             'items' => $items,
