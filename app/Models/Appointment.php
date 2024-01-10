@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Notifications\Appointment as AppointmentNotification;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Notifications\Notifiable;
 
 class Appointment extends Model
@@ -44,5 +45,15 @@ class Appointment extends Model
     public function sendNotification(string $type): void
     {
         $this->notify(new AppointmentNotification($type));
+    }
+
+    /**
+     * Get All appointment images
+     *
+     * @return HasMany
+     */
+    public function getImages(): HasMany
+    {
+        return $this->hasMany(AppointmentImage::class);
     }
 }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Customer;
 use App\Http\Controllers\Controller;
 use App\Http\Events\Appointment as AppointmentEvent;
 use App\Models\Appointment;
+use App\Models\AppointmentImage;
 use App\Models\CustomerAddress;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -12,9 +13,22 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\Validation\Rule;
 use Illuminate\View\View;
 use App\Notifications\Appointment as CreateAppointmentNotification;
+use App\Helpers\AWS\S3;
 
 class AppointmentController extends Controller
 {
+    /**
+     * @var S3
+     */
+    protected S3 $s3;
+
+    /**
+     * @param S3 $s3
+     */
+    public function __construct(S3 $s3) {
+        $this->s3 = $s3;
+    }
+
     /**
      * Display the customer's appointments.
      */
@@ -66,6 +80,17 @@ class AppointmentController extends Controller
 
             $appointment = Appointment::query()->create($appointmentData);
             event(new AppointmentEvent($appointment, CreateAppointmentNotification::CREATED_EVENT));
+
+            foreach($request->file('image') as $file)
+            {
+                $path = $this->s3->upload($file->getClientOriginalName(), $file->getPathname());
+                $appointmentImageData = [
+                    'appointment_id' => $appointment->id,
+                    'path' => $path
+                ];
+
+                AppointmentImage::query()->create($appointmentImageData);
+            }
 
             return redirect('/appointment')->with('success', __('Appointment Created Successfully'));
         } catch (\Exception $e) {

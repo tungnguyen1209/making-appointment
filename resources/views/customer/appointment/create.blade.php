@@ -13,7 +13,7 @@
                             {{ session('error') }}
                         </div>
                     @endif
-                    <form method="POST" action="{{ route('customer.appointment.create') }}">
+                    <form method="POST" action="{{ route('customer.appointment.create') }}" enctype="multipart/form-data">
                         @csrf
                         <!-- Name -->
                         <div>
@@ -48,6 +48,13 @@
                             <x-input-label for="appointment_datetime" :value="__('Datetime')" />
                             <x-text-input id="appointment_datetime" class="block mt-1 w-full" type="datetime-local" name="appointment_datetime" :value="old('appointment_datetime')" required autocomplete="username" />
                             <x-input-error :messages="$errors->get('appointment_datetime')" class="mt-2" />
+                        </div>
+
+                        <!-- Images -->
+                        <div class="mt-4">
+                            <x-input-label for="image" :value="__('Images')" />
+                            <x-text-input id="image" class="block mt-1 w-full" type="file" accept=".jpg,.jpeg,.png" multiple name="image[]" />
+                            <x-input-error :messages="$errors->get('image')" class="mt-2" />
                         </div>
 
                         <!-- Description -->

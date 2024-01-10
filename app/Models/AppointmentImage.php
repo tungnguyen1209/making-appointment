@@ -8,4 +8,14 @@ use Illuminate\Database\Eloquent\Model;
 class AppointmentImage extends Model
 {
     use HasFactory;
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
+    protected $fillable = [
+        'appointment_id',
+        'path',
+    ];
 }

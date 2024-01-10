@@ -14,26 +14,22 @@ class AppointmentController extends Controller
      */
     public function index(Request $request): View
     {
-        $query = $request->all();
-        $items = Appointment::all();
+        $query = $request->except(['page', 'pageSize']);
+        $pageSize = $request->get('pageSize') ?: 1;
+        $items = Appointment::query();
         if ($query) {
             foreach ($query as $key => $value) {
-                if ($key == 'pageSize' || $key == 'page') {
-                    continue;
-                }
-
-                $items = $items->where($key, $value);
+                $items = $items->where($key, 'like', "%$value%");
             }
         }
 
-        $itemsCount = $items->count();
-
-        $items = $items->skip($request->get('pageSize') * ($request->get('page') - 1))
-            ->take($request->get('pageSize'));
+        $items = $items->paginate($pageSize);
+        $itemsCount = Appointment::all()->count();
 
         return view('admin.appointment.listing', [
             'items' => $items,
-            'itemsCount' => $itemsCount
+            'itemsCount' => $itemsCount,
+            'query' => $query
         ]);
     }
 }
